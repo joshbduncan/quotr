@@ -14,11 +14,13 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main_bp.index'))
 
+    # disable new user registration
+    flash('Sorry, registration is currently unavailable!', 'warning')
+    return redirect(url_for('main_bp.index'))
+
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        # disable new user registration
-        # flash('Sorry, registration is currently unavailable!', 'warning')
 
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
@@ -107,9 +109,6 @@ def update_profile():
         'static', filename='profile_pics/' + current_user.image_file)
 
     return render_template('update_profile.html', title='Profile', image_file=image_file, form=form)
-
-
-# @users_bp.route('/quotes/user/<username>')
 
 
 @users_bp.route('/reset_password', methods=['GET', 'POST'])
