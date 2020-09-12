@@ -1,0 +1,64 @@
+<!-- SHARE MODAL -->
+<div id="shareModal" class="modal fade" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Share Quote</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+                <!-- SOCIAL MEDIA SHARE BUTTONS -->
+                <div class="modal-share-buttons">
+                    <a id="twitter-button" class="text-decoration-none" href="#" title="Share via Twitter"><i class="fab fa-twitter pr-3"></i></a>
+                    <a id="facebook-button" class="text-decoration-none" href="#" title="Share via Facebook"><i class="fab fa-facebook pr-3"></i></a>
+                    <a id="email-button" class="text-decoration-none" href="mailto:?subject=Check out this quote!&body=Hey, I found this quote and thought you might like it." title="Share via Email" target="_blank"><i class="fas fa-paper-plane"></i></a>
+                </div>
+
+                <!-- PERMALINK COPY TO CLIPBOARD -->
+                <div class="modal-share-permalink">
+                    <div class="copy-permalink pt-2 pb-2">Copy Page Link <span class="message"></span></div>
+                    <div class="input-group mb-3 pl-5 pr-5">
+                        <input type="text" id="permalink" class="form-control" value="" aria-label="Quote Permalink" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button id="copy-button" class="btn btn-primary" type="button" data-clipboard-action="copy" data-clipboard-target="#permalink" title="Copy Permalink to Clipboard"><i class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- No Love Modal -->
+<div id="noLoveModal" class="modal fade" tabindex="-1" aria-labelledby="noLoveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="love-modal text-center">
+                    <i class="fas fa-heart text-danger love-modal-heart mt-n3 pb-3"></i><br>
+                    <h2>Love this Quote?</h2>
+                    <p>Join now to save it for later.<p>
+                    <div class="post-buttons container col-sm-6 col-md-offset-1 mt-4 mb-5">
+                        <a class="btn btn-primary btn-block" href="{{ url_for('users_bp.login', next=request.path) }}" role="button">Log In</a>
+                        <a class="btn btn-secondary btn-block" href="{{ url_for('users_bp.register', next=request.path) }}" role="button">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

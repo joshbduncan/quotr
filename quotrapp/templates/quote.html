@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- BIG QUOTATION MARK -->
+    <div class="big-quote text-center">
+        <header>
+            <i class="fas fa-quote-left"></i>
+        </header>
+    </div>
+
+    <!-- QUOTE BODY -->
+    <div class="quote mt-5 text-center">
+        <div>
+            <blockquote class="quote-text user-select-all">{{ quote.content }}</blockquote>
+            <p class="quote-author mt-4 mb-4">&mdash; <cite><a
+                        href="{{ url_for('quotes_bp.quotes', author=quote.author.name) }}">{{ quote.author.name }}</a></cite></p>
+        </div>
+        
+        <!-- QUOTE SHARE AND LOVE -->
+        <div class="mb-5">
+            <p>
+                <a class="quote-share-link text-decoration-none" href="" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" title="Share Quote"><i class="fas fa-share-alt"></i></a>
+
+                {% if current_user.is_authenticated %}
+                    {% if current_user in quote.loves %}
+                        <a class="quote-loves text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
+                            <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+                        </a>
+                    {% else %}
+                        <a class="quote-loves text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
+                            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+                        </a>
+                    {% endif %}
+                {% else %}
+                        <a class="quote-loves-no-love text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
+                            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+                        </a>
+                {% endif %}
+
+            </p>
+        </div>
+
+        <!-- EDIT QUOTE IF POSTED BY CURRENT USER -->
+        {% if quote.user == current_user %}
+            {# <div class="post-info">
+                <p class="text-center text-secondary">
+                    <i class="fas fa-calendar-alt pr-2"></i><time class="quote-date" datetime="{{ quote.date }}">{{ quote.date.strftime('%Y-%m-%d') }}</time>
+                </p>
+            </div> #}
+            <div class="post-buttons container col-sm-6 col-md-offset-1 mt-n3">
+                <a class="btn btn-primary btn-block" href="{{ url_for('quotes_bp.update_quote', quote_id=quote.id) }}" role="button">Update Quote</a>
+                <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete Quote</button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- BIG QUOTATION MARK -->
+    <div class="big-quote mt-5 text-center">
+        <header>
+            <i class="fas fa-quote-right"></i>
+        </header>
+    </div>
+
+    <!-- INSERT COMMON QUOTE MODALS -->
+    {% include 'modals.html' %}
+
+    <!-- Delete Modal -->
+    <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Quote?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this quote?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <form action="{{ url_for('quotes_bp.delete_quote', quote_id=quote.id) }}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Delete Quote">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

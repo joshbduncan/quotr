@@ -1,0 +1,158 @@
+body {
+    font-family: 'APL385 Unicode', Hack, 'Go Mono', 'Roboto Mono', 'IBM Plex Mono', Inconsolata, 'Source Code Pro', 'PT Mono', 'Ubuntu Mono', 'Fira Mono', monospace;
+}
+
+blockquote,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Futura, Futura, 'Benton Sans', sans-serif
+}
+
+.quotr {
+    max-width: 42em;
+}
+
+.flashes {
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.navbar {
+    padding: 0em 0em;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.icons {
+    font-size: 1.25em;
+}
+
+.icons a {
+    padding-left: .25em;
+}
+
+.pagination-links {
+    font-size: 1.25em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pagination-links a {
+    border-width:3px !important;
+}
+
+.footer {
+    font-size: 1.25em;
+    text-align: center;
+}
+
+.footer a {
+    font-weight: 700;
+}
+
+.big-quote {
+    color: lightgray;
+    font-size: 3em;
+    line-height: 1;
+}
+
+.profile-pic img {
+    width: 125px;
+    height: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.quote-body {
+    font-weight: 500;
+}
+
+.quote-text {
+    font-size: 2em;
+    font-weight: 900;
+}
+
+/* Increase blockquote size on larger screens */
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .quote-text {
+        font-size: 3em;
+    }
+}
+
+.quote-text-list {
+    font-size: 1.25em;
+    font-weight: 600;
+}
+
+.quote-author {
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+.quote-author-list {
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.quote-date {
+    font-size: 1em;
+}
+
+.quote-category {
+    font-weight: 500;
+}
+
+.quote-loves .quote-loves-not-logged-in {
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.love_count {
+    font-weight: 700;
+}
+
+.love-modal-heart {
+    font-size: 3em;
+}
+
+.quote-share-link {
+    font-size: 1em;
+}
+
+.modal-share-buttons {
+    font-size: 3em;
+}
+
+.copy-permalink {
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+
+/* Autocomplete jquery cleanup */
+.ui-menu {
+    font-family: 'APL385 Unicode', Hack, 'Go Mono', 'Roboto Mono', 'IBM Plex Mono', Inconsolata, 'Source Code Pro', 'PT Mono', 'Ubuntu Mono', 'Fira Mono', monospace;
+    font-size: 1.25rem;
+    color: #495057;
+    padding-left: .8em;
+}
+
+
+.ui-autocomplete, .ui-autocomplete .ui-menu-item, .ui-autocomplete .ui-menu-item a {
+    background:none;
+    background-color: white;
+}
+
+.ui-menu-item.ui-state-focus {
+    border: none;
+    font-weight: 700;
+    color: #007bff;
+}
