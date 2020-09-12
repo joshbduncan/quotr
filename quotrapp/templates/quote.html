@@ -24,16 +24,16 @@
 
                 {% if current_user.is_authenticated %}
                     {% if current_user in quote.loves %}
-                        <a class="quote-loves text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
+                        <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
                             <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                     {% else %}
-                        <a class="quote-loves text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
+                        <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
                             <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                     {% endif %}
                 {% else %}
-                        <a class="quote-loves-no-love text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
+                        <a class="quote-loves-no-love no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
                             <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                 {% endif %}

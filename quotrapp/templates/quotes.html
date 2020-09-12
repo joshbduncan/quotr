@@ -20,16 +20,16 @@
                 <i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes', category=quote.category.name) }}">{{ quote.category.name }}</a>
                 {% if current_user.is_authenticated %}
                     {% if current_user in quote.loves %}
-                        <a class="quote-loves float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
+                        <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
                             <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                     {% else %}
-                        <a class="quote-loves float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
+                        <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
                             <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                     {% endif %}
                 {% else %}
-                        <a class="quote-loves-no-love float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
+                        <a class="quote-loves-no-love no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
                             <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
                         </a>
                 {% endif %}

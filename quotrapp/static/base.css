@@ -115,6 +115,10 @@ h6 {
     font-weight: 700;
 }
 
+a.no-hover:focus, a.no-hover:hover {
+    color: #dc3545!important;
+}
+
 .love_count {
     font-weight: 700;
 }
