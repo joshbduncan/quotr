@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     quotes = db.relationship('Quote', backref='user', lazy=True)
 
-    def get_reset_token(self, expires_sec=1):
+    def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 

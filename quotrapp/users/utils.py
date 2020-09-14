@@ -55,7 +55,7 @@ def thumbnails(frames, output_size):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    sender = os.environ.get('MAIL_DEFAULT_SENDER')
+    sender = current_app.config['MAIL_DEFAULT_SENDER']
 
     msg = Message('Password Reset Request',
                   sender=sender,
