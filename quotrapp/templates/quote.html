@@ -39,6 +39,7 @@
                 {% endif %}
 
             </p>
+            <p><i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes', category=quote.category.name) }}">{{ quote.category.name }}</a></p>
         </div>
 
         <!-- EDIT QUOTE IF POSTED BY CURRENT USER -->

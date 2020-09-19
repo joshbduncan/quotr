@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from quotrapp.errors.utils import send_error_email
 
 
 errors_bp = Blueprint('errors_bp', __name__)
@@ -16,4 +17,10 @@ def error_403(error):
 
 @errors_bp.app_errorhandler(500)
 def error_500(error):
+    print('********************************* ERROR **************************************')
+    print('********************************* ERROR **************************************')
+    print(error)
+    print('********************************* ERROR **************************************')
+    print('********************************* ERROR **************************************')
+    send_error_email(error)
     return render_template('errors/500.html'), 500
