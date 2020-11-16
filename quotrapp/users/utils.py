@@ -5,13 +5,18 @@ from flask import url_for
 from flask_mail import Message
 from quotrapp import mail
 from flask import current_app
+import boto3
 
 
-def delete_old_profile_picture(old_picture, root_path):
-    # delete the previous profile pic to reduce unused files
-    old_picture_path = os.path.join(
-        root_path, 'static/profile_pics', old_picture)
-    os.remove(old_picture_path)
+s3 = boto3.resource('s3')
+s3_client = boto3.client('s3')
+s3_bucket = 'quotr-static'
+
+
+def s3_file_upload(picture_fname, picture_path):
+    with open(picture_path, "rb") as f:
+        s3_client.upload_fileobj(f, s3_bucket, picture_fname, ExtraArgs={
+                                 'ACL': 'public-read'})
 
 
 def save_profile_picture(profile_picture, root_path):
@@ -34,7 +39,33 @@ def save_profile_picture(profile_picture, root_path):
         img.thumbnail(output_size)
         img.save(picture_path)
 
+    s3_file_upload(picture_fname, picture_path)
+
     return picture_fname
+
+
+def delete_old_profile_picture(old_picture, root_path):
+    # delete the previous profile pic to reduce unused files
+    # old_picture_path = os.path.join(
+    #     root_path, 'static/profile_pics', old_picture)
+    # if check_old_profile_picture(old_picture, root_path):
+    #     os.remove(old_picture_path)
+    file = s3.Object(s3_bucket, old_picture)
+    file.delete()
+
+
+def check_old_profile_picture(old_picture, root_path):
+    # old_picture_path = os.path.join(
+    #     root_path, 'static/profile_pics', old_picture)
+    # if os.path.exists(old_picture_path):
+    #     return True
+    # else:
+    #     return False
+    files = s3_client.list_objects_v2(Bucket=s3_bucket, Prefix=old_picture)
+    if files['KeyCount'] > 0:
+        return True
+    else:
+        return False
 
 
 def resize_gif(picture, picture_path, output_size):

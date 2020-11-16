@@ -1,5 +1,9 @@
 ## To-do's
 
+### BUG FIXES
+- [ ] fix avatar image uploader
+- [ ] fix pagination for quote by 'author' or 'category' 
+
 ### DATABASE
 
 - [ ] sorting options
