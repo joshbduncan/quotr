@@ -1,8 +1,8 @@
 ## To-do's
 
 ### BUG FIXES
-- [ ] fix avatar image uploader
-- [ ] fix pagination for quote by 'author' or 'category' 
+- [x] fix avatar image uploader
+- [x] fix pagination for quote by 'author', 'category', and 'user' quotes
 
 ### DATABASE
 
