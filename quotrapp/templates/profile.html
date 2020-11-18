@@ -12,8 +12,7 @@
     </div>
     <div class="profile-buttons container col-sm-6 col-md-offset-1">
         {% if quotes %}
-        <a class="btn btn-primary btn-block" href="{{ url_for('quotes_bp.quotes', username=current_user.username) }}" role="button">View
-            Your Quotes</a>
+        <a class="btn btn-primary btn-block" href="{{ url_for('quotes_bp.quotes_by_user', username=current_user.username) }}" role="button">View Your Quotes</a>
         {% endif %}
         <a class="btn btn-secondary btn-block" href="{{ url_for('users_bp.update_profile') }}" role="button">Update Profile</a>
         <a class="btn btn-secondary btn-block" href="{{ url_for('users_bp.logout') }}" role="button">Logout</a>

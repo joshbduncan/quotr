@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="big-quote text-center">
+        <header>
+            <i class="fas fa-quote-left"></i>
+        </header>
+    </div>
+
+    <!-- INSERT QUOTES LIST -->
+    {% include 'quotes_list.html' %}
+
+    {% if quotes.pages > 1 %}
+        <div class="pagination-links text-center mt-5">
+            {% for page_num in quotes.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
+                {% if page_num %}
+                    {% if quotes.page == page_num %}
+                        <a class="border-bottom border-primary text-decoration-none" href="{{ url_for('quotes_bp.quotes_loves', page=page_num) }}">{{ page_num }}</a>
+                    {% else %}
+                        <a class="text-decoration-none" href="{{ url_for('quotes_bp.quotes_loves', page=page_num) }}">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="dotdotdot">...</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="big-quote mt-5 text-center">
+        <header>
+            <i class="fas fa-quote-right"></i>
+        </header>
+    </div>
+
+    <!-- INSERT COMMON QUOTE MODALS -->
+    {% include 'modals.html' %}
+
+{% endblock content %}

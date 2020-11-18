@@ -55,6 +55,7 @@ class Quote(db.Model):
     # loves = db.Column(db.Integer, nullable=False, default=1)
     loves = db.relationship('User', secondary=loves,
                             backref=db.backref('user_loves'), lazy='dynamic')
+    loves_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('user.id'), nullable=False)
     author_id = db.Column(db.Integer,
@@ -63,13 +64,10 @@ class Quote(db.Model):
                             db.ForeignKey('category.id'), nullable=False)
 
     def __repr__(self):
-        return f'Date: {self.date}, Quote: {self.content[:25]}..., Author: {self.author.name}'
+        return f'Date: {self.date}, Quote: {self.content[:25]}..., Author: {self.author.name}, Loves: {self.loves.count()}'
 
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     quotes = db.relationship('Quote', backref='category', lazy=True)
-
-    # def __repr__(self):
-    #     return self.name

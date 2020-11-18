@@ -14,7 +14,7 @@
         <div>
             <blockquote class="quote-text user-select-all">{{ quote.content }}</blockquote>
             <p class="quote-author mt-4 mb-4">&mdash; <cite><a
-                        href="{{ url_for('quotes_bp.quotes', author=quote.author.name) }}">{{ quote.author.name }}</a></cite></p>
+                        href="{{ url_for('quotes_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite></p>
         </div>
         
         <!-- QUOTE SHARE AND LOVE -->
@@ -39,7 +39,7 @@
                 {% endif %}
 
             </p>
-            <p><i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes', category=quote.category.name) }}">{{ quote.category.name }}</a></p>
+            <p><i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes_by_category', category=quote.category.name) }}">{{ quote.category.name }}</a></p>
         </div>
     </div>
 
