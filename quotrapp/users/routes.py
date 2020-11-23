@@ -20,10 +20,7 @@ def register():
         return redirect(url_for('main_bp.index'))
 
     # check new user registration switch
-    if no_new_users:
-        flash('Sorry, registration is currently unavailable!', 'warning')
-        return redirect(url_for('users_bp.login'))
-    else:
+    if current_app.config['NEW_USERS']:
         form = RegistrationForm()
 
         if form.validate_on_submit():
@@ -35,12 +32,15 @@ def register():
 
             db.session.add(user)
             db.session.commit()
-            no_new_users = True
+            current_app.config['NEW_USERS'] = False
             flash(f'Your account has been created!', 'success')
 
             return redirect(url_for('users_bp.login'))
 
         return render_template('register.html', title='Register', form=form)
+    else:
+        flash('Sorry, registration is currently unavailable!', 'warning')
+        return redirect(url_for('users_bp.login'))
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
