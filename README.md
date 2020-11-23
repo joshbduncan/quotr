@@ -100,3 +100,16 @@ Descending Order
 
 ### get random quote
     random_quote = Quote.query.order_by(func.random()).first()
+
+
+### setup on heroku
+    > heroku run bash -a quotrapp
+<!--  -->
+    ~ $ flask shell
+    Python 3.8.5 (default, Jul 21 2020, 09:33:27)
+    [GCC 7.5.0] on linux
+    App: quotrapp [development]
+    Instance: /app/instance
+<!--  -->
+    >>> from setup import *
+    >>> start()

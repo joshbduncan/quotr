@@ -9,32 +9,38 @@ from quotrapp.users.utils import save_profile_picture, resize_gif, thumbnails, d
 users_bp = Blueprint('users_bp', __name__)
 s3_bucket_url = 'https://quotr-static.s3.amazonaws.com/'
 
+no_new_users = False
+
 
 @users_bp.route('/register', methods=['GET', 'POST'])
 def register():
+    global no_new_users
+
     if current_user.is_authenticated:
         return redirect(url_for('main_bp.index'))
 
-    # disable new user registration
-    flash('Sorry, registration is currently unavailable!', 'warning')
-    return redirect(url_for('main_bp.index'))
-
-    form = RegistrationForm()
-
-    if form.validate_on_submit():
-
-        hashed_password = bcrypt.generate_password_hash(
-            form.password.data).decode('utf-8')
-        user = User(username=form.username.data,
-                    email=form.email.data, password=hashed_password)
-
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Your account has been created!', 'success')
-
+    # check new user registration switch
+    if no_new_users:
+        flash('Sorry, registration is currently unavailable!', 'warning')
         return redirect(url_for('users_bp.login'))
+    else:
+        form = RegistrationForm()
 
-    return render_template('register.html', title='Register', form=form)
+        if form.validate_on_submit():
+
+            hashed_password = bcrypt.generate_password_hash(
+                form.password.data).decode('utf-8')
+            user = User(username=form.username.data,
+                        email=form.email.data, password=hashed_password)
+
+            db.session.add(user)
+            db.session.commit()
+            no_new_users = True
+            flash(f'Your account has been created!', 'success')
+
+            return redirect(url_for('users_bp.login'))
+
+        return render_template('register.html', title='Register', form=form)
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
