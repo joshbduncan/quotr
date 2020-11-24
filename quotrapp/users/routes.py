@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from quotrapp import db, bcrypt
 from quotrapp.models import User, Quote
 from quotrapp.users.forms import RegistrationForm, LoginForm, UpdateProfileForm, RequestResetForm, ResetPasswordForm
-from quotrapp.users.utils import save_profile_picture, resize_gif, thumbnails, delete_old_profile_picture, send_reset_email, check_old_profile_picture
+from quotrapp.users.utils import save_profile_picture, resize_gif, thumbnails, delete_old_profile_picture, send_reset_email, check_old_profile_picture, send_new_user_email
 
 
 users_bp = Blueprint('users_bp', __name__)
@@ -33,6 +33,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             current_app.config['NEW_USERS'] = False
+            send_new_user_email(user)
             flash(f'Your account has been created!', 'success')
 
             return redirect(url_for('users_bp.login'))

@@ -1,10 +1,9 @@
 import os
 import secrets
 from PIL import Image, ImageSequence
-from flask import url_for
+from flask import url_for, current_app
 from flask_mail import Message
 from quotrapp import mail
-from flask import current_app
 import boto3
 
 
@@ -97,6 +96,24 @@ def send_reset_email(user):
 {url_for('users_bp.reset_password', token=token, _external=True)}
 
 If you did not make this request, simply ignore this email and no changes will be made.
+
+- Quotr
+'''
+
+    mail.send(msg)
+
+
+def send_new_user_email(user):
+    sender = current_app.config['MAIL_DEFAULT_SENDER']
+
+    msg = Message('Quotr has a New User',
+                  sender=sender,
+                  recipients=[sender])
+
+    msg.body = f'''Quotr has a new user:
+
+Email:{user.email}
+Username:{user.username}
 
 - Quotr
 '''
