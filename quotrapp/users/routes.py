@@ -1,20 +1,17 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
-from quotrapp import db, bcrypt
+from quotrapp import db, bcrypt, limiter
 from quotrapp.models import User, Quote
 from quotrapp.users.forms import RegistrationForm, LoginForm, UpdateProfileForm, RequestResetForm, ResetPasswordForm
 from quotrapp.users.utils import save_profile_picture, resize_gif, thumbnails, delete_old_profile_picture, send_reset_email, check_old_profile_picture, send_new_user_email
 
 
 users_bp = Blueprint('users_bp', __name__)
-s3_bucket_url = 'https://quotr-static.s3.amazonaws.com/'
-
-no_new_users = False
 
 
 @users_bp.route('/register', methods=['GET', 'POST'])
+@limiter.limit("5 per day")
 def register():
-    global no_new_users
 
     if current_user.is_authenticated:
         return redirect(url_for('main_bp.index'))
@@ -32,7 +29,7 @@ def register():
 
             db.session.add(user)
             db.session.commit()
-            current_app.config['NEW_USERS'] = False
+            # current_app.config['NEW_USERS'] = False
             send_new_user_email(user)
             flash(f'Your account has been created!', 'success')
 
@@ -76,11 +73,12 @@ def profile():
     if check_old_profile_picture(current_user.image_file, current_app.root_path):
         # image_file = url_for(
         #     'static', filename='profile_pics/' + current_user.image_file)
-        image_file = s3_bucket_url + current_user.image_file
+        image_file = current_app.config['S3_BUCKET_URL'] + \
+            current_user.image_file
     else:
         # image_file = url_for(
         #     'static', filename='profile_pics/default.jpg')
-        image_file = s3_bucket_url + 'default.jpg'
+        image_file = current_app.config['S3_BUCKET_URL'] + 'default.jpg'
 
     # check to see if user has any posts to determine button display on profile page
     if Quote.query.filter_by(user_id=current_user.id).count() > 0:
@@ -124,11 +122,12 @@ def update_profile():
     if check_old_profile_picture(current_user.image_file, current_app.root_path):
         # image_file = url_for(
         #     'static', filename='profile_pics/' + current_user.image_file)
-        image_file = s3_bucket_url + current_user.image_file
+        image_file = current_app.config['S3_BUCKET_URL'] + \
+            current_user.image_file
     else:
         # image_file = url_for(
         #     'static', filename='profile_pics/default.jpg')
-        image_file = s3_bucket_url + 'default.jpg'
+        image_file = current_app.config['S3_BUCKET_URL'] + 'default.jpg'
 
     return render_template('update_profile.html', title='Profile', image_file=image_file, form=form)
 
