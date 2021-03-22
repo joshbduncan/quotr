@@ -26,20 +26,9 @@ clipboard.on('error', function (e) {
 $('#shareModal').on('show.bs.modal', function (event) {
     var identifier = $(event.relatedTarget) // Button that triggered the modal
     var quote_link = identifier.data('identifier') // Extract info from data-* attributes
-    var quote_link_short = quote_link.replace(/^https?\:\/\//i, "")
+    var quote_link_short = quote_link.replace(/^https?\:\/\//i, "") // Remove http:// or https:// from URL
     var quote_text = identifier.data('content') // Extract quote content from data-* attributes
     var quote_author = identifier.data('author') // Extract quote author from data-* attributes
-
-    var copy_permalink = document.getElementById("permalink")
-    copy_permalink.setAttribute('value', quote_link)
-
-    var email_button = document.getElementById("email-button")
-    var email_link = "mailto:?subject=Check out this quote!&body=Hey, I found this quote and thought you might like it " + quote_link + "."
-    email_button.setAttribute('href', email_link)
-
-    var facebook_button = document.getElementById("facebook-button")
-    var facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + quote_link
-    facebook_button.setAttribute('href', facebook_link)
 
     var quote_length = quote_text.length
     var author_length = quote_author.length
@@ -48,14 +37,25 @@ $('#shareModal').on('show.bs.modal', function (event) {
     if (quote_length + author_length + link_length + 3 > 288) {
         var length = 288 - author_length - link_length - 10
         var trimmed_text = quote_text.substring(0, length) + "..."
-        var twitter_content = encodeURIComponent(trimmed_text) + " – " + quote_author + quote_link_short
+        var twitter_content = encodeURIComponent(trimmed_text + " – " + quote_author + " ") + quote_link_short
     } else {
-        var twitter_content = encodeURIComponent(quote_text) + " – " + quote_author + quote_link_short
+        var twitter_content = encodeURIComponent(quote_text + " – " + quote_author + " ") + quote_link_short
     }
 
     var twitter_button = document.getElementById("twitter-button")
     var twitter_tweet = "https://twitter.com/intent/tweet?text=" + twitter_content.replace("title=", "")
     twitter_button.setAttribute('href', twitter_tweet)
+
+    var facebook_button = document.getElementById("facebook-button")
+    var facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + quote_link
+    facebook_button.setAttribute('href', facebook_link)
+
+    var email_button = document.getElementById("email-button")
+    var email_link = "mailto:?subject=Check out this quote!&body=Hey, I found this quote and thought you might like it " + quote_link + "."
+    email_button.setAttribute('href', email_link)
+
+    var copy_permalink = document.getElementById("permalink")
+    copy_permalink.setAttribute('value', quote_link)
 
 });
 

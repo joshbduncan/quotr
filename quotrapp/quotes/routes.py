@@ -152,6 +152,8 @@ def quotes_by_author(author):
 
     title = f'quotes from {author.name}'
 
+    print(quotes.items)
+
     if quotes.total > 0:
         return render_template('quotes_by_author.html', title=title, quotes=quotes, author=author.name)
     else:
