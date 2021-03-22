@@ -24,7 +24,7 @@
                     </a>
             {% endif %}
             
-            <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}"><i class="fas fa-share-alt"></i></a>
+            <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" data-content="{{ quote.content }}" data-author="{{ quote.author.name }}"><i class="fas fa-share-alt"></i></a>
         </p>
     </div>
 </div>

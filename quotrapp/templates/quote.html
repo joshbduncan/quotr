@@ -20,7 +20,7 @@
         <!-- QUOTE SHARE AND LOVE -->
         <div class="mb-5">
             <p>
-                <a class="quote-share-link text-decoration-none" href="" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" title="Share Quote"><i class="fas fa-share-alt"></i></a>
+                <a class="quote-share-link text-decoration-none" href="" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" data-content="{{ quote.content }}" data-author="{{ quote.author.name }}" title="Share Quote"><i class="fas fa-share-alt"></i></a>
 
                 {% if current_user.is_authenticated %}
                     {% if current_user in quote.loves %}

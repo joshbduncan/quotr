@@ -5,7 +5,7 @@ from quotrapp import db, bcrypt
 from quotrapp.models import User, Author, Quote, Category, loves
 
 
-def start():
+def setup_new_database():
     # cleanup old db
     db.drop_all()
     print(f'Database tables dropped...')
