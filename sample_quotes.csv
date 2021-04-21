@@ -58,7 +58,7 @@ datetime,category,content,author,loves
 2020-06-30 08:46:00.000000,motivation,"When you get into a tight place and everything goes against you, ‘til it seems as though you could not hold on a minute longer, never give up then, for that is just the place and time that the tide will turn’.",Harriet Beecher Stowe,26
 2019-05-31 20:53:00.000000,business,"There are three types of lies: Lies, damn lies and statistics.",Mark Twain,82
 2019-11-07 11:35:00.000000,life,"When all is said and done, have you done and said enough? Have you just gone along for the ride, or have you steered destiny's hot rod? When you leave this world, did you make it any better than it was when you arrived? All you need is all you've got: your wits and the clothes on your back, your epitaph is yours to earn; your legacy is yours to make.",Go Forth,42
-2020-02-04 18:56:00.000000,widsom,"We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion. And medicine, law, business, engineering, these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love, these are what we stay alive for. To quote from Whitman, 'O me! O life!... of the questions of these recurring; of the endless trains of the faithless... of cities filled with the foolish; what good amid these, O me, O life?' Answer. That you are here – that life exists, and identity; that the powerful play goes on and you may contribute a verse. What will your verse be?",N.H. Kleinbaum,21
+2020-02-04 18:56:00.000000,wisdom,"We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion. And medicine, law, business, engineering, these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love, these are what we stay alive for. To quote from Whitman, 'O me! O life!... of the questions of these recurring; of the endless trains of the faithless... of cities filled with the foolish; what good amid these, O me, O life?' Answer. That you are here – that life exists, and identity; that the powerful play goes on and you may contribute a verse. What will your verse be?",N.H. Kleinbaum,21
 2020-03-28 05:01:00.000000,success,Unhook your self worth from your results.,Unknown,95
 2020-05-26 03:58:00.000000,business,"I want a business that supports my lifestyle, not a lifestyle that supports my business.",Unknown,59
 2019-09-13 15:00:00.000000,motivation,Work will work when nothing else will work.,Unknown,11
@@ -70,7 +70,7 @@ datetime,category,content,author,loves
 2019-06-30 15:25:00.000000,wisdom,The past is indifferent to your opinion about it.,Unknown,4
 2019-08-16 08:26:00.000000,motivation,Laziness is the easiest way to a hard life.,Unknown,44
 2019-07-19 08:53:00.000000,life,Don’t die hesitating!,Unknown,70
-2019-12-02 21:19:00.000000,widsom,If everyone likes you you’re not being fucking real enough.,Unknown,53
+2019-12-02 21:19:00.000000,wisdom,If everyone likes you you’re not being fucking real enough.,Unknown,53
 2020-10-03 21:49:00.000000,success,You can’t do EPIC SHIT with basic people!,Unknown,92
 2019-02-15 13:33:00.000000,life,Many times an old man has no other evidence besides his age to prove he has lived a long time.,Seneca,17
 2020-11-21 00:39:00.000000,success,You’ve got to work hard because being poor is just really inconvenient.,Unknown,41
@@ -98,4 +98,5 @@ datetime,category,content,author,loves
 2019-10-17 19:06:00.000000,business,"Trade money for time, not time for money. You’re going to run out of time first.",Naval Ravikant,96
 2020-04-30 11:10:00.000000,wisdom,"Doctors won’t make you healthy. Nutritionists won’t make you slim. Teachers won’t make you smart. Gurus won’t make you calm. Mentors won’t make you rich. Trainers won’t make you fit. Ultimately, you have to take responsibility. Save yourself.",Naval Ravikant,26
 2019-08-02 05:56:00.000000,wisdom,"A lion grown too old & weak to hunt pretended to be sick as a ruse & ate the animals that came to visit him in his cave. But a fox only greeted him from outside, On being asked why it did not enter, it replied, 'Because I can only see tracks going in & none coming out.'",Aesop,45
-2021-04-21 010:56:00.000000,life,"Life is just a series of peaks and troughs. And you don't know whether you're in a trough until you're climbing out, or on a peak until you're coming down. And that's it you know, you never know what's round the corner.",David Brent,1
+2021-04-21 10:56:00.000000,life,"Life is just a series of peaks and troughs. And you don't know whether you're in a trough until you're climbing out, or on a peak until you're coming down. And that's it you know, you never know what's round the corner.",David Brent,1
+2021-04-21 10:56:00.000000,uncategorized,"Donkeys are the best",Josh Duncan,1

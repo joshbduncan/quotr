@@ -76,4 +76,4 @@ class Category(db.Model):
     quotes = db.relationship('Quote', backref='category', lazy=True)
 
     def __repr__(self):
-        return f'Category: {self.name} ({self.id})'
+        return f'Category: {self.name} (ID: {self.id})'
