@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="big-quote text-center">
+    <header>
+      <i class="fas fa-quote-left"></i>
+    </header>
+  </div>
+
+    {% for category in categories %}
+    <div class="quote mt-5 border-bottom">
+      <div>
+        <p><a href="{{ url_for('quotes_bp.quotes_by_category', category=category.name) }}">{{ category.name }}</a></p>
+      </div>
+    </div>
+    {% endfor %}
+
+  <div class="big-quote mt-5 text-center">
+    <header>
+      <i class="fas fa-quote-right"></i>
+    </header>
+  </div>
+
+  <!-- INSERT COMMON QUOTE MODALS -->
+  {% include 'modals.html' %}
+
+{% endblock content %}

@@ -7,10 +7,10 @@ Thumbs.db
 .private
 .gitconfig
 .vscode
-scratchpad.*
 *.code-workspace
 *.db
 /storage
+/tmp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

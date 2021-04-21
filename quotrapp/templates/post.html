@@ -3,72 +3,68 @@
 {% block content %}
 
 <div class="post-form">
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">{{ legend }}</legend>
-            <div class="form-group">
-                {{ form.quote.label(class="form-control-label") }}
-                {% if form.quote.errors %}
-                {{ form.quote(class="form-control form-control-lg is-invalid", rows="8") }}
-                <div class="invalid-feedback">
-                    {% for error in form.quote.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.quote(class="form-control form-control-lg", rows="8") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.author.label(class="form-control-label") }}
-                {% if form.author.errors %}
-                {{ form.author(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.author.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.author(class="form-control form-control-lg author") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.category.label(class="form-control-label") }}
-                {% if form.category.errors %}
-                {{ form.category(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.category.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.category(class="form-control form-control-lg category") }}
-                {% endif %}
-            </div>
-        </fieldset>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-primary") }}
-            {% if legend == "Post Quote" %}
-                <a href="{{ url_for('users_bp.profile') }}" class="btn btn-secondary" title="Cancel">Cancel</a>
-            {% elif legend == "Update Quote" %}
-                <a href="{{ url_for('quotes_bp.quote', quote_id=quote_id) }}" class="btn btn-secondary" title="Cancel">Cancel</a>
-            {% endif %}
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">{{ legend }}</legend>
+      <div class="form-group">
+        {{ form.quote.label(class="form-control-label") }}
+        {% if form.quote.errors %}
+        {{ form.quote(class="form-control form-control-lg is-invalid", rows="8") }}
+        <div class="invalid-feedback">
+          {% for error in form.quote.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
         </div>
-    </form>
+        {% else %}
+        {{ form.quote(class="form-control form-control-lg", rows="8") }}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.author.label(class="form-control-label") }}
+        {% if form.author.errors %}
+        {{ form.author(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.author.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.author(class="form-control form-control-lg author") }}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.category.label(class="form-control-label") }}
+        {% if form.category.errors %}
+        {{ form.category(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.category.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.category(class="form-control form-control-lg category") }}
+        {% endif %}
+      </div>
+    </fieldset>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-primary") }}
+      {% if legend == "Post Quote" %}
+        <a href="{{ url_for('users_bp.profile') }}" class="btn btn-secondary" title="Cancel">Cancel</a>
+      {% elif legend == "Update Quote" %}
+        <a href="{{ url_for('quotes_bp.quote', quote_id=quote_id) }}" class="btn btn-secondary" title="Cancel">Cancel</a>
+      {% endif %}
+    </div>
+  </form>
 </div>
 
 <script>
-    $(function () {
-        $.ajax({
-            url: '{{ url_for("quotes_bp.author_autocomplete") }}'
-        }).done(function (data) {
-            $('#author').autocomplete({
-                source: data,
-                minLength: 2
-            });
-        });
+  $( function() {
+    var authors = {{ authors|tojson }};
+    $( "#author" ).autocomplete({
+      source: authors
     });
+  } );
 </script>
 
 {% endblock content %}

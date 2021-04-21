@@ -1,31 +1,31 @@
 {% for quote in quotes.items %}
 <div class="quote mt-5 border-bottom">
-    <div>
-        <blockquote class="quote-text-list"><a class="text-dark text-decoration-none" href="{{ url_for('quotes_bp.quote', quote_id=quote.id) }}">{{ quote.content }}</a></blockquote>
-        <p class="quote-author-list">&mdash; <cite><a href="{{ url_for('quotes_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite>
-        </p>
-    </div>
-    <div class="mb-5">
-        <p>
-            <i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes_by_category', category=quote.category.name) }}">{{ quote.category.name }}</a>
-            {% if current_user.is_authenticated %}
-                {% if current_user in quote.loves %}
-                    <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
-                        <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                    </a>
-                {% else %}
-                    <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
-                        <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                    </a>
-                {% endif %}
-            {% else %}
-                    <a class="quote-loves-no-love no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
-                        <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                    </a>
-            {% endif %}
-            
-            <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}"  data-content="{{ quote.content }}" data-author="{{ quote.author.name }}"><i class="fas fa-share-alt"></i></a>
-        </p>
-    </div>
+  <div>
+    <blockquote class="quote-text-list"><a class="text-dark text-decoration-none" href="{{ url_for('quotes_bp.quote', quote_id=quote.id) }}">{{ quote.content }}</a></blockquote>
+    <p class="quote-author-list">&mdash; <cite><a href="{{ url_for('quotes_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite>
+    </p>
+  </div>
+  <div class="mb-5">
+    <p>
+      <i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes_by_category', category=quote.category.name) }}">{{ quote.category.name }}</a>
+      {% if current_user.is_authenticated %}
+        {% if current_user in quote.loves %}
+          <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
+            <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+          </a>
+        {% else %}
+          <a class="quote-loves no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
+            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+          </a>
+        {% endif %}
+      {% else %}
+          <a class="quote-loves-no-love no-hover float-right text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
+            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+          </a>
+      {% endif %}
+      
+      <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}"  data-content="{{ quote.content }}" data-author="{{ quote.author.name }}"><i class="fas fa-share-alt"></i></a>
+    </p>
+  </div>
 </div>
 {% endfor %}

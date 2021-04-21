@@ -22,3 +22,4 @@ class Config(object):
     S3_BUCKET_URL = 'https://quotr-static.s3.amazonaws.com/'
     NEW_USERS = True
     POSTS_PER_PAGE = 5
+    FLASK_ADMIN_SWATCH = 'cerulean'

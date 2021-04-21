@@ -39,13 +39,16 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f'User: {self.username}, {self.email}, {self.image_file}'
+        return f'User: {self.username} ({self.id}), {self.email}, {self.image_file}'
 
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     quotes = db.relationship('Quote', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f'Author: {self.name} ({self.id})'
 
 
 class Quote(db.Model):
@@ -64,10 +67,13 @@ class Quote(db.Model):
                             db.ForeignKey('category.id'), nullable=False)
 
     def __repr__(self):
-        return f'Date: {self.date}, Quote: {self.content[:25]}..., Author: {self.author.name}, Loves: {self.loves.count()}'
+        return f'ID: {self.id}, Date: {self.date}, Quote: {self.content[:25].strip()}..., Author: {self.author.name}, Loves: {self.loves.count()}'
 
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     quotes = db.relationship('Quote', backref='category', lazy=True)
+
+    def __repr__(self):
+        return f'Category: {self.name} ({self.id})'

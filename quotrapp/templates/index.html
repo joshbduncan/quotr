@@ -2,55 +2,55 @@
 
 {% block content %}
 
-    <!-- BIG QUOTATION MARK -->
-    <div class="big-quote text-center">
-        <header>
-            <i class="fas fa-quote-left"></i>
-        </header>
+  <!-- BIG QUOTATION MARK -->
+  <div class="big-quote text-center">
+    <header>
+      <i class="fas fa-quote-left"></i>
+    </header>
+  </div>
+
+  <!-- QUOTE BODY -->
+  <div class="quote mt-5 text-center">
+    <div>
+      <blockquote class="quote-text user-select-all">{{ quote.content }}</blockquote>
+      <p class="quote-author mt-4 mb-4">&mdash; <cite><a
+            href="{{ url_for('quotes_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite></p>
     </div>
+    
+    <!-- QUOTE SHARE AND LOVE -->
+    <div class="mb-5">
+      <p>
+        <a class="quote-share-link text-decoration-none" href="" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" data-content="{{ quote.content }}" data-author="{{ quote.author.name }}" title="Share Quote"><i class="fas fa-share-alt"></i></a>
 
-    <!-- QUOTE BODY -->
-    <div class="quote mt-5 text-center">
-        <div>
-            <blockquote class="quote-text user-select-all">{{ quote.content }}</blockquote>
-            <p class="quote-author mt-4 mb-4">&mdash; <cite><a
-                        href="{{ url_for('quotes_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite></p>
-        </div>
-        
-        <!-- QUOTE SHARE AND LOVE -->
-        <div class="mb-5">
-            <p>
-                <a class="quote-share-link text-decoration-none" href="" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}" data-content="{{ quote.content }}" data-author="{{ quote.author.name }}" title="Share Quote"><i class="fas fa-share-alt"></i></a>
+        {% if current_user.is_authenticated %}
+          {% if current_user in quote.loves %}
+            <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
+              <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+            </a>
+          {% else %}
+            <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
+              <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+            </a>
+          {% endif %}
+        {% else %}
+            <a class="quote-loves-no-love no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
+              <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
+            </a>
+        {% endif %}
 
-                {% if current_user.is_authenticated %}
-                    {% if current_user in quote.loves %}
-                        <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="decrease" href="" title="Loves">
-                            <i class="fas fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                        </a>
-                    {% else %}
-                        <a class="quote-loves no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="increase" href="" title="Loves">
-                            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                        </a>
-                    {% endif %}
-                {% else %}
-                        <a class="quote-loves-no-love no-hover text-danger text-decoration-none pl-4" quote_id="{{ quote.id }}" love_action="login" href="#" title="Loves" href="" data-toggle="modal" data-target="#noLoveModal">
-                            <i class="far fa-heart pr-2 love_button"></i><span class="love_count">{{ quote.loves.count() }}</span>
-                        </a>
-                {% endif %}
-
-            </p>
-            <p><i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes_by_category', category=quote.category.name) }}">{{ quote.category.name }}</a></p>
-        </div>
+      </p>
+      <p><i class="fas fa-folder-open text-secondary pr-2"></i><a class="quote-category text-secondary" href="{{ url_for('quotes_bp.quotes_by_category', category=quote.category.name) }}">{{ quote.category.name }}</a></p>
     </div>
+  </div>
 
-    <!-- BIG QUOTATION MARK -->
-    <div class="big-quote mt-5 text-center">
-        <header>
-            <i class="fas fa-quote-right"></i>
-        </header>
-    </div>
+  <!-- BIG QUOTATION MARK -->
+  <div class="big-quote mt-5 text-center">
+    <header>
+      <i class="fas fa-quote-right"></i>
+    </header>
+  </div>
 
-    <!-- INSERT COMMON QUOTE MODALS -->
-    {% include 'modals.html' %}
+  <!-- INSERT COMMON QUOTE MODALS -->
+  {% include 'modals.html' %}
 
 {% endblock content %}

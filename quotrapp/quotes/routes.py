@@ -3,16 +3,36 @@ from flask_login import current_user, login_required
 from sqlalchemy import func, asc, desc
 from quotrapp import db
 from quotrapp.models import Quote, Author, User, Category
-from quotrapp.quotes.forms import PostForm, UpdatePostForm
+from quotrapp.quotes.forms import PostForm
 
 
 quotes_bp = Blueprint('quotes_bp', __name__)
 
 
-@quotes_bp.route('/quote/new', methods=['GET', 'POST'])
-@login_required
+def get_categories():
+    categories = []
+    for category in Category.query.order_by('name'):
+        categories.append(category)
+    return categories
+
+
+def get_category_choices(categories):
+    tup_categories = []
+    for category in categories:
+        tup_categories.append((category.id, category.name))
+    return tup_categories
+
+
+@ quotes_bp.route('/quote/new', methods=['GET', 'POST'])
+@ login_required
 def post():
     form = PostForm()
+    categories = get_categories()
+    form.category.choices = get_category_choices(categories)
+    form.category.data = 0
+
+    # grab authors for autocomplete javascript
+    authors = sorted([author.name for author in Author.query.all()])
 
     if form.validate_on_submit():
         # check to see if author already exists, if not, add them to db
@@ -25,23 +45,29 @@ def post():
             author = check
 
         quote = Quote(content=form.quote.data,
-                      author_id=author.id, user_id=current_user.id, category_id=form.category.data.id)
+                      author_id=author.id, user_id=current_user.id, category_id=form.category.data)
 
         db.session.add(quote)
         db.session.commit()
         flash('Your quote has been posted!', 'success')
         return redirect(url_for('quotes_bp.quote', quote_id=quote.id))
 
-    return render_template('post.html', title='New Quote', form=form, js_extras=True, legend='Post Quote', autocomplete_js=True)
+    return render_template('post.html', title='New Quote', form=form, js_extras=True, legend='Post Quote', authors=authors, autocomplete_js=True)
 
 
-@quotes_bp.route('/author/_autocomplete', methods=['GET'])
-def author_autocomplete():
-    authors = [author.name for author in Author.query.all()]
-    return jsonify(authors)
+# @ quotes_bp.route('/author/_autocomplete', methods=['GET'])
+# def author_autocomplete():
+#     authors = sorted([author.name for author in Author.query.all()])
+#     return jsonify(authors)
 
 
-@quotes_bp.route('/quote/<int:quote_id>')
+# @ quotes_bp.route('/category/_autocomplete', methods=['GET'])
+# def category_autocomplete():
+#     categories = [category.name for category in Category.query.all()]
+#     return jsonify(categories)
+
+
+@ quotes_bp.route('/quote/<int:quote_id>')
 def quote(quote_id):
     # permalink for invidual quotes for sharing
     quote = Quote.query.get_or_404(quote_id)
@@ -49,15 +75,8 @@ def quote(quote_id):
     return render_template('quote.html', title=f'quote by {quote.author.name}', quote=quote)
 
 
-def get_categories():
-    categories = []
-    for category in Category.query.order_by('name'):
-        categories.append((str(category.id), category.name))
-    return categories
-
-
-@quotes_bp.route('/quote/<int:quote_id>/update', methods=['GET', 'POST'])
-@login_required
+@ quotes_bp.route('/quote/<int:quote_id>/update', methods=['GET', 'POST'])
+@ login_required
 def update_quote(quote_id):
     quote = Quote.query.get_or_404(quote_id)
 
@@ -65,7 +84,10 @@ def update_quote(quote_id):
     if quote.user != current_user:
         abort(403)
 
-    form = UpdatePostForm()
+    form = PostForm()
+    # must stay here so choices validate
+    categories = get_categories()
+    form.category.choices = get_category_choices(categories)
 
     if form.validate_on_submit():
         # check to see if author already exists, if not, add them to db
@@ -79,6 +101,7 @@ def update_quote(quote_id):
 
         quote.content = form.quote.data
         quote.author_id = author.id
+        quote.category_id = form.category.data
 
         db.session.commit()
 
@@ -88,16 +111,13 @@ def update_quote(quote_id):
     elif request.method == 'GET':
         form.quote.data = quote.content
         form.author.data = quote.author.name
-        form.category.choices = get_categories()
-        form.category.data = str(quote.category.id)
-
-    # test_field = SelectField("Test: ", choices=[(1, "Abc"), (2, "Def")], default=2)
+        form.category.data = quote.category.id
 
     return render_template('post.html', title='Update Quote', form=form, legend='Update Quote', quote_id=quote_id, autocomplete_js=True)
 
 
-@quotes_bp.route('/quote/<int:quote_id>/delete', methods=['POST'])
-@login_required
+@ quotes_bp.route('/quote/<int:quote_id>/delete', methods=['POST'])
+@ login_required
 def delete_quote(quote_id):
     quote = Quote.query.get_or_404(quote_id)
 
@@ -112,7 +132,7 @@ def delete_quote(quote_id):
     return redirect(url_for('quotes_bp.quotes', username=current_user.username))
 
 
-@quotes_bp.route('/quotes')
+@ quotes_bp.route('/quotes')
 def quotes():
     quotes = Quote.query.filter_by().paginate(
         per_page=current_app.config['POSTS_PER_PAGE'])
@@ -125,7 +145,7 @@ def quotes():
         abort(404)
 
 
-@quotes_bp.route('/quotes/user/<username>')
+@ quotes_bp.route('/quotes/user/<username>')
 def quotes_by_user(username):
     user = User.query.filter_by(username=username).first_or_404()
     quotes = Quote.query.filter_by(user_id=user.id).paginate(
@@ -139,7 +159,7 @@ def quotes_by_user(username):
         abort(404)
 
 
-@quotes_bp.route('/quotes/author/<author>')
+@ quotes_bp.route('/quotes/author/<author>')
 def quotes_by_author(author):
     if '-' in author:
         author = author.replace('-', ' ')
@@ -160,7 +180,17 @@ def quotes_by_author(author):
         abort(404)
 
 
-@quotes_bp.route('/quotes/category/<category>')
+@ quotes_bp.route('/quotes/categories')
+def categories():
+    categories = get_categories()
+    # TODO add category count
+
+    title = 'Quote Categories'
+
+    return render_template('categories.html', title=title, categories=categories)
+
+
+@ quotes_bp.route('/quotes/category/<category>')
 def quotes_by_category(category):
     category = Category.query.filter_by(name=category).first_or_404()
     quotes = Quote.query.filter_by(
@@ -174,7 +204,7 @@ def quotes_by_category(category):
         abort(404)
 
 
-@quotes_bp.route('/quotes/loves')
+@ quotes_bp.route('/quotes/loves')
 def quotes_loves():
     quotes = Quote.query.order_by(desc(Quote.loves_count)).paginate(
         per_page=current_app.config['POSTS_PER_PAGE'])
@@ -183,8 +213,8 @@ def quotes_loves():
     return render_template('quotes_loves.html', title=title, quotes=quotes)
 
 
-@quotes_bp.route('/quote/_loved', methods=['POST'])
-@login_required
+@ quotes_bp.route('/quote/_loved', methods=['POST'])
+@ login_required
 def loved():
     quote_id = request.form['id']
     action = request.form['action']
