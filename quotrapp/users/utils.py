@@ -97,7 +97,7 @@ def send_reset_email(user):
 
 If you did not make this request, simply ignore this email and no changes will be made.
 
-- Quotr
+- quotr
 '''
 
     mail.send(msg)
@@ -115,7 +115,7 @@ def send_new_user_email(user):
 Email:{user.email}
 Username:{user.username}
 
-- Quotr
+- quotr
 '''
 
     mail.send(msg)

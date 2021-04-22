@@ -29,7 +29,11 @@ def post():
     form = PostForm()
     categories = get_categories()
     form.category.choices = get_category_choices(categories)
-    form.category.data = 0
+
+    # pre-select the uncategorized category as a default
+    uncategorized_category_id = Category.query.filter_by(
+        name='uncategorized').first().id
+    form.category.data = uncategorized_category_id
 
     # grab authors for autocomplete javascript
     authors = sorted([author.name for author in Author.query.all()])
@@ -111,9 +115,15 @@ def update_quote(quote_id):
     elif request.method == 'GET':
         form.quote.data = quote.content
         form.author.data = quote.author.name
+
+        categories = get_categories()
+        form.category.choices = get_category_choices(categories)
         form.category.data = quote.category.id
 
-    return render_template('post.html', title='Update Quote', form=form, legend='Update Quote', quote_id=quote_id, autocomplete_js=True)
+        # grab authors for autocomplete javascript
+        authors = sorted([author.name for author in Author.query.all()])
+
+    return render_template('post.html', title='Update Quote', form=form, legend='Update Quote', authors=authors, quote_id=quote_id, autocomplete_js=True)
 
 
 @ quotes_bp.route('/quote/<int:quote_id>/delete', methods=['POST'])
