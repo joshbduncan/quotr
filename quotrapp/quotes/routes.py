@@ -323,15 +323,30 @@ def popular_authors():
 def search():
     form = SearchForm()
 
-    # grab the 5 most loved quotes
-    quotes = Quote.query.order_by(desc(Quote.loves_count)).paginate(
-        per_page=current_app.config['POSTS_PER_PAGE'])
-
     if form.validate_on_submit():
         q = form.q.data.lower()
         # print(f'**** SEARCH QUERY = {q} ****')
 
-        if quotes.total > 0:
+        quote_ids = search_idx.search(q)
+
+        if quote_ids:
+            # add search tokens to db
+            tokens = q.split()
+            token_objects = []
+            for token in tokens:
+                check = Token.query.filter_by(token=token).first()
+                if not check:
+                    t = Token(token=token, count=1)
+                    token_objects.append(t)
+                else:
+                    check.count += 1
+
+            # add all tokens to db at once
+            if token_objects:
+                db.session.add_all(token_objects)
+
+            db.session.commit()
+
             return redirect(url_for('quotes_bp.search_results', q=q))
         else:
             flash(
@@ -356,23 +371,6 @@ def search_results():
             per_page=current_app.config['POSTS_PER_PAGE'])
 
         if quotes.total > 0:
-            # add search tokens to db
-            tokens = q.split()
-            token_objects = []
-            for token in tokens:
-                check = Token.query.filter_by(token=token).first()
-                if not check:
-                    t = Token(token=token, count=1)
-                    token_objects.append(t)
-                else:
-                    check.count += 1
-
-            # add all tokens to db at once
-            if token_objects:
-                db.session.add_all(token_objects)
-
-            db.session.commit()
-
             title = f'search results for "{q}"'
             return render_template('quotes_by_search.html', title=title, tokens=q, quotes=quotes)
         else:
