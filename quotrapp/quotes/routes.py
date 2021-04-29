@@ -360,9 +360,8 @@ def search_results():
             tokens = q.split()
             token_objects = []
             for token in tokens:
-
                 check = Token.query.filter_by(token=token).first()
-                if check:
+                if not check:
                     t = Token(token=token, count=1)
                     token_objects.append(t)
                 else:
