@@ -360,11 +360,18 @@ def search_results():
             tokens = q.split()
             token_objects = []
             for token in tokens:
-                t = Token(token=token)
-                token_objects.append(t)
+
+                check = Token.query.filter_by(token=token).first()
+                if check:
+                    t = Token(token=token, count=1)
+                    token_objects.append(t)
+                else:
+                    check.count += 1
 
             # add all tokens to db at once
-            db.session.add_all(token_objects)
+            if token_objects:
+                db.session.add_all(token_objects)
+
             db.session.commit()
 
             title = f'search results for "{q}"'
@@ -381,16 +388,14 @@ def search_results():
 
 @quotes_bp.route('/quotes/search/most-searched', methods=['GET', 'POST'])
 def most_searched():
-    tokens = db.session.query(Token, func.count(
-        'token')).group_by('token').all()
+    # tokens = db.session.query(Token, func.count(
+    #     'token')).group_by('token').all()
+
+    tokens = Token.query.order_by(desc(Token.count)).limit(100).all()
 
     # TODO make sure the tokens are in desc
     for t in tokens:
         print(t)
-        token = t[0].token
-        count = t[1]
-
-        print(f'{token} => {count}')
 
     title = f'most searched terms'
-    return render_template('searched_tokens.html', title=title, tokens=tokens[:100])
+    return render_template('searched_tokens.html', title=title, tokens=tokens)
