@@ -51,8 +51,12 @@ $("#shareModal").on("show.bs.modal", function (event) {
     var facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + quote_link;
     facebook_button.setAttribute("href", facebook_link);
 
+    var email_body = 'Hey, I found this quote and thought you might like it!\n\n' +
+        '"' + quote_text + '"\n\n' +
+        'View it online: ' + quote_link;
+
     var email_button = document.getElementById("email-button");
-    var email_link = "mailto:?subject=Check out this quote!&body=Hey, I found this quote and thought you might like it " + quote_link + ".";
+    var email_link = encodeURI("mailto:?subject=Check out this quote!&body=" + email_body);
     email_button.setAttribute("href", email_link);
 
     var copy_permalink = document.getElementById("permalink");

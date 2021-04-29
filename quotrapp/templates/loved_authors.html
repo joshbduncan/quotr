@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-heart text-danger"></i>
+  </header>
+</div>
+
+<div class="container page-title text-center pt-3 pb-3">
+  <h2>{{ title }}</h2>
+</div>
+
+<div class="container authors-list text-center">
+  {% for author in authors %}
+    <p><a href="{{ url_for('quotes_bp.quotes_by_author', author=author[0]) }}">{{ author[0] }} ({{ author[1] }})</span></a></p>
+  {% endfor %}
+</div>
+
+{% endblock content %}

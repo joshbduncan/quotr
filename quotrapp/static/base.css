@@ -30,6 +30,11 @@ h6 {
     font-weight: 700;
 }
 
+.most-loved {
+    font-size: 1.5em;
+    line-height: 2em;
+}
+
 .icons {
     font-size: 1.25em;
 }
@@ -76,6 +81,11 @@ h6 {
 .quote-text {
     font-size: 2em;
     font-weight: 900;
+}
+
+.authors-list {
+    font-size: 1.25em;
+    font-weight: 700;
 }
 
 /* Increase blockquote size on larger screens */

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-search"></i>
+  </header>
+</div>
+
+<div class="container page-title text-center pt-3 pb-3">
+  <h2>{{ title }}</h2>
+</div>
+
+  <!-- INSERT QUOTES LIST -->
+  {% include 'quotes_list.html' %}
+
+  {% if quotes.pages > 0 %}
+    <div class="pagination-links text-center mt-5">
+      {# <a href="{{ url_for('quotes_bp.search_results', page=quotes.page - 1) }}">&lt;</a> #}
+      {% for page_num in quotes.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
+        {% if page_num %}
+          {% if quotes.page == page_num %}
+            <a class="border-bottom border-primary text-decoration-none" href="{{ url_for('quotes_bp.search_results', q=tokens, page=page_num) }}">{{ page_num }}</a>
+          {% else %}
+            <a class="text-decoration-none" href="{{ url_for('quotes_bp.search_results', q=tokens, page=page_num) }}">{{ page_num }}</a>
+          {% endif %}
+        {% else %}
+          <span class="dotdotdot">...</span>
+        {% endif %}
+      {% endfor %}
+      {# <a href="{{ url_for('quotes_bp.search_results', page=quotes.page + 1) }}">&gt;</a> #}
+    </div>
+  {% endif %}
+
+  <!-- SEARCH TOKEN HIGHLIGHTER SCRIPT -->
+  {% if tokens %}
+    <script>
+      // remove html encoding from the tokens so highlighter works
+      var decodeHTML = function (html) {
+          var txt = document.createElement('textarea');
+          txt.innerHTML = html;
+          return txt.value;
+      };
+
+      // grab all search query tokens from jinja
+      var tokens = "{{ tokens|replace(" ", "|") }}"; // add regex '|' or character
+      var tokens = decodeHTML(tokens);
+      // console.log(tokens);
+      var quotes = document.querySelectorAll('[id=quote-content]'); // find all quotes on the page
+      // console.log(quotes);
+      var re = new RegExp(tokens, "gi");
+      
+      for(var i=0; i<quotes.length; i++) { // loop through all quotes
+        var content = quotes[i].innerHTML;
+        // console.log(re, quotes[i].innerHTML.match(re)); // apply the regex replacement
+
+        content.match(re).forEach(function(match, i) { // loop over the matches
+          content = content.replace(match, function replace(match) { // wrap the found strings
+            return '<mark>' + match + '</mark>';
+          });
+        });
+
+        quotes[i].innerHTML = content;
+      };
+    </script>
+  {% endif %}
+
+  <!-- INSERT COMMON QUOTE MODALS -->
+  {% include 'modals.html' %}
+
+{% endblock content %}

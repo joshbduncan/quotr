@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-search"></i>
+  </header>
+</div>
+
+<div class="search-form pt-5">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <div class="input-group mb-3 pl-5 pr-5">
+      {{ form.q(class="form-control form-control-lg") }}
+      <div class="input-group-append">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container most-loved pt-2">
+  <div class="row text-center">
+    <div class="col-sm">
+      <i class="fas fa-heart pr-2 text-danger"></i><a href="{{ url_for('quotes_bp.quotes_love') }}">Most Loved Quotes</a>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-sm">
+      <i class="fas fa-heart pr-2 text-danger"></i><a href="{{ url_for('quotes_bp.author_love') }}">Most Loved Authors</a>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

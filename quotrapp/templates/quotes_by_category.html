@@ -2,11 +2,15 @@
 
 {% block content %}
 
-  <div class="big-quote text-center">
-    <header>
-      <i class="fas fa-quote-left"></i>
-    </header>
-  </div>
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-folder-open"></i>
+  </header>
+</div>
+
+<div class="container page-title text-center pt-3 pb-3">
+  <h2>{{ title }}</h2>
+</div>
 
   <!-- INSERT QUOTES LIST -->
   {% include 'quotes_list.html' %}
@@ -28,12 +32,6 @@
       {# <a href="{{ url_for('quotes_bp.quotes', page=quotes.page + 1) }}">&gt;</a> #}
     </div>
   {% endif %}
-
-  <div class="big-quote mt-5 text-center">
-    <header>
-      <i class="fas fa-quote-right"></i>
-    </header>
-  </div>
 
   <!-- INSERT COMMON QUOTE MODALS -->
   {% include 'modals.html' %}

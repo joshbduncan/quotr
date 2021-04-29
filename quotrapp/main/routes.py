@@ -1,6 +1,6 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, current_app
 from sqlalchemy import func
-from quotrapp.models import Quote
+from quotrapp.models import Quote, Author
 
 
 main_bp = Blueprint('main_bp', __name__)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-heart text-danger"></i>
+  </header>
+</div>
+
+<div class="container page-title text-center pt-3">
+  <h2>{{ title }}</h2>
+</div>
+
+<!-- INSERT QUOTES LIST -->
+{% include 'quotes_list.html' %}
+
+<!-- INSERT COMMON QUOTE MODALS -->
+{% include 'modals.html' %}
+
+{% endblock content %}
