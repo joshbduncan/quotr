@@ -28,6 +28,7 @@
 - [x] add tokens on search update
 - [x] figure out how to remove old tokens on search update
 - [ ] add category count
+- [ ] add block for search terms that should show in top 100
 
 ## Change Log
 
@@ -163,3 +164,12 @@ sorted_authors = sorted(loves_count.items(),
 - built out search results listing page
 - added javascript highlighting to the search tokens on the search results page
 - added Token model to db to capture successfull search tokens
+
+### 2021-04-27
+
+- added most searched terms route
+- term/token/tag cloud for top 100 search terms
+- reset db migration to fresh start
+- reset prod db to a fresh install
+- pushed to prod server
+- minor css tweaks

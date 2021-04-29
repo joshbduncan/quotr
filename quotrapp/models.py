@@ -81,7 +81,7 @@ class Category(db.Model):
 
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(50), unique=True, nullable=False)
+    token = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return f'Token: {self.token} (ID: {self.id})'

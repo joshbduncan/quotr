@@ -7,13 +7,13 @@ from quotrapp.models import User, Author, Quote, Category, loves
 
 def setup_new_database():
     # cleanup old db
-    db.drop_all()
-    print(f'Database tables dropped...')
+    # db.drop_all()
+    # print(f'Database tables dropped...')
 
     # create new db tables
-    db.create_all()
-    print(f'Database tables created...')
-    print('')
+    # db.create_all()
+    # print(f'Database tables created...')
+    # print('')
 
     # setup base user
     print('Setup base user for quotes import.')
@@ -36,7 +36,7 @@ def setup_new_database():
         quotes = csv.DictReader(csvfile, delimiter=',', quotechar='"')
         for i, row in enumerate(quotes):
 
-            # csv format = datetime,category, content,author,loves
+            # csv format = datetime,category, content, author, loves
 
             # setup date in correct datetime format
             date = datetime.datetime.strptime(

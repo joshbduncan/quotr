@@ -328,7 +328,7 @@ def search():
         per_page=current_app.config['POSTS_PER_PAGE'])
 
     if form.validate_on_submit():
-        q = form.q.data
+        q = form.q.data.lower()
         # print(f'**** SEARCH QUERY = {q} ****')
 
         if quotes.total > 0:
@@ -357,7 +357,7 @@ def search_results():
 
         if quotes.total > 0:
             # add search tokens to db
-            tokens = q.split(' ')
+            tokens = q.split()
             token_objects = []
             for token in tokens:
                 t = Token(token=token)
@@ -377,3 +377,20 @@ def search_results():
     form = SearchForm()
 
     return render_template('search.html', title='Search', form=form)
+
+
+@quotes_bp.route('/quotes/search/most-searched', methods=['GET', 'POST'])
+def most_searched():
+    tokens = db.session.query(Token, func.count(
+        'token')).group_by('token').all()
+
+    # TODO make sure the tokens are in desc
+    for t in tokens:
+        print(t)
+        token = t[0].token
+        count = t[1]
+
+        print(f'{token} => {count}')
+
+    title = f'most searched terms'
+    return render_template('searched_tokens.html', title=title, tokens=tokens[:100])
