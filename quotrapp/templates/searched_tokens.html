@@ -15,9 +15,9 @@
 <div class="container tokens-list text-center pt-4 pb-1">
   {% for token in tokens %}
     {% if not loop.last %}
-      <a href="{{ url_for('quotes_bp.search_results', q=token.token) }}">{{ token.token }} ({{ token.count }})</span></a>,
+      <a href="{{ url_for('search_bp.search_results', q=token.token) }}">{{ token.token }} ({{ token.count }})</span></a>,
     {% else %}
-      <a href="{{ url_for('quotes_bp.search_results', q=token.token) }}">{{ token.token }} ({{ token.count }})</span></a>
+      <a href="{{ url_for('search_bp.search_results', q=token.token) }}">{{ token.token }} ({{ token.count }})</span></a>
     {% endif %}
   {% endfor %}
 </div>

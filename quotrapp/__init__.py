@@ -32,12 +32,16 @@ def create_app(config_class=Config):
 
     from quotrapp.users.routes import users_bp
     from quotrapp.quotes.routes import quotes_bp
+    from quotrapp.authors.routes import authors_bp
     from quotrapp.main.routes import main_bp
+    from quotrapp.search.routes import search_bp
     from quotrapp.errors.handlers import errors_bp
     from quotrapp.api.routes import api_bp
     app.register_blueprint(users_bp)
     app.register_blueprint(quotes_bp)
+    app.register_blueprint(authors_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(search_bp)
     app.register_blueprint(errors_bp)
     app.register_blueprint(api_bp)
 

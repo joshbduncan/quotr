@@ -173,3 +173,7 @@ sorted_authors = sorted(loves_count.items(),
 - reset prod db to a fresh install
 - pushed to prod server
 - minor css tweaks
+- restructured app layout
+    - sep'd out authors and search into their own modules with a blueprint
+    - put Search class into search.utils
+    - cleaned up imports for all routes files

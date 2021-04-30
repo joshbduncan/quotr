@@ -1,14 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request, abort, Response, Blueprint, jsonify, current_app
 from flask_login import current_user, login_required
-from sqlalchemy import func, asc, desc
+from sqlalchemy import asc, desc
 from quotrapp import db
 from quotrapp.models import Quote, Author, User, Category, Token
-from quotrapp.quotes.forms import PostForm, SearchForm
-from quotrapp.search import Search
+from quotrapp.quotes.forms import PostForm
+from quotrapp.search.routes import search_idx
 
 
 quotes_bp = Blueprint('quotes_bp', __name__)
-search_idx = Search()
+search_idx = search_idx
 
 
 def get_categories():
@@ -213,27 +213,6 @@ def quotes_by_user(username):
         abort(404)
 
 
-@quotes_bp.route('/quotes/author/<author>')
-def quotes_by_author(author):
-    if '-' in author:
-        author = author.replace('-', ' ')
-    if '+' in author:
-        author = author.replace('+', ' ')
-
-    author = Author.query.filter_by(name=author).first_or_404()
-
-    quotes = Quote.query.filter_by(
-        author_id=author.id).order_by(
-        desc(Quote.loves_count)).paginate(per_page=current_app.config['POSTS_PER_PAGE'])
-
-    title = f'quotes from {author.name}'
-
-    if quotes.total > 0:
-        return render_template('quotes_by_author.html', title=title, quotes=quotes, author=author.name)
-    else:
-        abort(404)
-
-
 @quotes_bp.route('/quotes/categories')
 def categories():
     categories = get_categories()
@@ -286,113 +265,3 @@ def loved():
         db.session.commit()
 
     return jsonify({'id': quote.id, 'loves': quote.loves.count()})
-
-
-@quotes_bp.route('/quotes/most-loved-authors')
-def author_love():
-    authors = Author.query.all()
-
-    loves_count = {}
-
-    for author in authors:
-        # skip over author "Unknown" since it skews the results
-        if author.name == 'Unknown':
-            continue
-        for quote in author.quotes:
-            if quote.author.name not in loves_count:
-                loves_count[quote.author.name] = 0
-            loves_count[quote.author.name] += quote.loves_count
-
-    sorted_authors = sorted(loves_count.items(),
-                            key=lambda item: item[1], reverse=True)
-
-    title = f'most loved authors'
-    return render_template('loved_authors.html', title=title, authors=sorted_authors[:10])
-
-
-@quotes_bp.route('/quotes/popular-authors')
-def popular_authors():
-    quotes = Quote.query.order_by(desc(Quote.loves_count)).paginate(
-        per_page=current_app.config['POSTS_PER_PAGE'])
-
-    title = f'most loved quotes'
-    return render_template('loved_quotes.html', title=title, quotes=quotes)
-
-
-@quotes_bp.route('/search', methods=['GET', 'POST'])
-def search():
-    form = SearchForm()
-
-    if form.validate_on_submit():
-        q = form.q.data.lower()
-        # print(f'**** SEARCH QUERY = {q} ****')
-
-        quote_ids = search_idx.search(q)
-
-        if quote_ids:
-            # add search tokens to db
-            tokens = q.split()
-            token_objects = []
-            for token in tokens:
-                check = Token.query.filter_by(token=token).first()
-                if not check:
-                    t = Token(token=token, count=1)
-                    token_objects.append(t)
-                else:
-                    check.count += 1
-
-            # add all tokens to db at once
-            if token_objects:
-                db.session.add_all(token_objects)
-
-            db.session.commit()
-
-            return redirect(url_for('quotes_bp.search_results', q=q))
-        else:
-            flash(
-                f'sorry, there were no matches for "{q}"', 'warning')
-        return redirect(url_for('quotes_bp.search'))
-
-    return render_template('search.html', title='Search', form=form, quotes=quotes)
-
-
-@quotes_bp.route('/quotes/search', methods=['GET', 'POST'])
-def search_results():
-
-    if request.args:
-        q = request.args.get('q')
-        # print(f'**** SEARCH QUERY = {q} ****')
-        quote_ids = search_idx.search(q)
-        # print(f'**** SEARCH QUERY = {quote_ids} ****')
-
-        # potential future solution to lots of returned results
-        # https://stackoverflow.com/questions/444475/sqlalchemy-turning-a-list-of-ids-to-a-list-of-objects/28370511#28370511
-        quotes = Quote.query.filter(Quote.id.in_(quote_ids)).paginate(
-            per_page=current_app.config['POSTS_PER_PAGE'])
-
-        if quotes.total > 0:
-            title = f'search results for "{q}"'
-            return render_template('quotes_by_search.html', title=title, tokens=q, quotes=quotes)
-        else:
-            flash(
-                f'sorry, there were no matches for "{q}"', 'warning')
-        return redirect(url_for('quotes_bp.search'))
-
-    form = SearchForm()
-
-    return render_template('search.html', title='Search', form=form)
-
-
-@quotes_bp.route('/quotes/search/most-searched', methods=['GET', 'POST'])
-def most_searched():
-    # tokens = db.session.query(Token, func.count(
-    #     'token')).group_by('token').all()
-
-    tokens = Token.query.order_by(desc(Token.count)).limit(100).all()
-
-    # TODO make sure the tokens are in desc
-    for t in tokens:
-        print(t)
-
-    title = f'most searched terms'
-    return render_template('searched_tokens.html', title=title, tokens=tokens)

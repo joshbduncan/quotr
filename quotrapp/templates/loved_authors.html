@@ -14,7 +14,7 @@
 
 <div class="container authors-list text-center pt-4 pb-1">
   {% for author in authors %}
-    <p><a href="{{ url_for('quotes_bp.quotes_by_author', author=author[0]) }}">{{ author[0] }} ({{ author[1] }})</span></a></p>
+    <p><a href="{{ url_for('authors_bp.quotes_by_author', author=author[0]) }}">{{ author[0] }} ({{ author[1] }})</span></a></p>
   {% endfor %}
 </div>
 
