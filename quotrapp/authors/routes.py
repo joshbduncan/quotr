@@ -1,5 +1,5 @@
 from flask import render_template, abort, Blueprint, current_app
-from sqlalchemy import desc
+from sqlalchemy import asc, desc
 from quotrapp import db
 from quotrapp.models import Quote, Author
 
@@ -26,6 +26,15 @@ def quotes_by_author(author):
         return render_template('quotes_by_author.html', title=title, quotes=quotes, author=author.name)
     else:
         abort(404)
+
+
+@authors_bp.route('/authors')
+def authors():
+
+    authors = Author.query.order_by(asc(Author.name)).all()
+
+    title = f'all authors'
+    return render_template('authors.html', title=title, authors=authors)
 
 
 @authors_bp.route('/authors/most-loved')

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="big-quote text-center">
+  <header>
+    <i class="fas fa-user-edit"></i>
+  </header>
+</div>
+
+<div class="container page-title text-center pt-3 pb-3">
+  <h2>{{ title }}</h2>
+</div>
+
+<div class="container authors-list text-center pt-4 pb-1">
+  {% for author in authors %}
+    {% if not loop.last %}
+      <a href="{{ url_for('authors_bp.quotes_by_author', author=author.name) }}">{{ author.name }}</span></a>,
+    {% else %}
+      <a href="{{ url_for('authors_bp.quotes_by_author', author=author.name) }}">{{ author.name }}</span></a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock content %}
