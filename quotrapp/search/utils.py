@@ -78,21 +78,23 @@ class Search:
     def _results(self, analyzed_query):
         return [self.index.get(token, set()) for token in analyzed_query]
 
+    def found_tokens(self, analyzed_query):
+        return [token for token in analyzed_query if token in self.index]
+
     def search(self, query, search_type='OR'):
 
         if search_type not in ('AND', 'OR'):
             return []
 
         analyzed_query = analyze(query)
+        found_tokens = self.found_tokens(analyzed_query)
         matches = self._results(analyzed_query)
 
         if search_type == 'AND':
             # all tokens must be in the document
             results = set.intersection(*matches)
 
-        if search_type == 'OR' and len(matches) > 1:
+        if search_type == 'OR':
             results = set.union(*matches)
-        else:
-            results = matches
 
-        return results
+        return (results, found_tokens)

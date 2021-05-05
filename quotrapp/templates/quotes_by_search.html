@@ -15,7 +15,7 @@
   <!-- INSERT QUOTES LIST -->
   {% include 'quotes_list.html' %}
 
-  {% if quotes.pages > 0 %}
+  {% if quotes.pages > 1 %}
     <div class="pagination-links text-center mt-5">
       {# <a href="{{ url_for('search_bp.search_results', page=quotes.page - 1) }}">&lt;</a> #}
       {% for page_num in quotes.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
@@ -57,7 +57,8 @@
     var re_quotes = new RegExp(tokens, "gi"); // find all regex for matching tokens
     var content = quotes[i].innerHTML; // grab the quote content
     content.match(re_quotes).forEach(function(match, i) { // loop over the all token matches in content
-      var re_matches = new RegExp(match + "\\b", "gi"); // replace regex for all whole word token matches
+      // var re_matches = new RegExp(match + "\\b", "gi"); // replace regex for all whole word token matches
+      var re_matches = new RegExp("(?=\\b" + match + "['-]?)([a-zA-Z'-]+)", "gi");
       content = content.replace(re_matches, '<mark>' + match + '</mark>'); // actually replace all token matches
     });
     quotes[i].innerHTML = content; // set quote contect to with updated highlighting

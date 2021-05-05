@@ -1,35 +1,5 @@
 # quotr README
 
-## Big Fixes
-- [x] fix avatar image uploader
-- [x] fix pagination for quote by 'author', 'category', and 'user' quotes
-- [x] fix quote author link on quote template
-
-## To-do's
-
-- [ ] db sorting options
-- [ ] db quote updated date
-- [ ] db profile updates date
-- [x] animated gif processor
-- [x] csv importer for initial base quotes
-- [x] random date generator for sample quotes
-- [x] implement username urls instead of user id's
-- [x] implement author name urls instead of author id's
-- [x] change password reset email signature to 'quotr'
-- [ ] continuious scrolling, lazy loading
-- [ ] better buttons
-- [ ] share actual quote content to facebook, not just the link
-- [x] share actual quote content to email, not just the link
-- [ ] check email body on differnet devices (mail, outlook, etc.)
-- [x] remove author on quote delete if they have no other quotes
-- [x] figure out how to remove authors if no more quotes after an update to a quote
-- [x] add tokens on quote addition
-- [x] remove tokens on quote deletion
-- [x] add tokens on search update
-- [x] figure out how to remove old tokens on search update
-- [ ] add category count
-- [ ] add block for search terms that should show in top 100
-
 ## Change Log
 
 ### 2021-04-15
@@ -178,8 +148,37 @@ sorted_authors = sorted(loves_count.items(),
     - put Search class into search.utils
     - cleaned up imports for all routes files
 
-### 2021-05-04
+### 2021-05-05
 
 - removed excess code from code from search route
-- added sanitizing to search query before passing it to search function
-- put a check in place ```if search_idx.search(token)``` to only add search tokens to the db if they have matching quotes
+- added in found_tokens function to return found Stemmer base tokens so that I can add those to the searched tokens db
+- changed javascript to regex to match any words starting with the Stemmer base token => that matched entire word that's
+
+```regex
+/(?=\bthat['-]?)([a-zA-Z'-]+)/gi
+```
+
+## To-do's
+
+- [ ] db sorting options
+- [ ] db quote updated date
+- [ ] db profile updates date
+- [x] animated gif processor
+- [x] csv importer for initial base quotes
+- [x] random date generator for sample quotes
+- [x] implement username urls instead of user id's
+- [x] implement author name urls instead of author id's
+- [x] change password reset email signature to 'quotr'
+- [ ] continuious scrolling, lazy loading
+- [ ] better buttons
+- [ ] share actual quote content to facebook, not just the link
+- [x] share actual quote content to email, not just the link
+- [ ] check email body on differnet devices (mail, outlook, etc.)
+- [x] remove author on quote delete if they have no other quotes
+- [x] figure out how to remove authors if no more quotes after an update to a quote
+- [x] add tokens on quote addition
+- [x] remove tokens on quote deletion
+- [x] add tokens on search update
+- [x] figure out how to remove old tokens on search update
+- [ ] add category count
+- [x] add block for search terms that should show in top 100
