@@ -35,35 +35,34 @@
 
   <!-- SEARCH TOKEN HIGHLIGHTER SCRIPT -->
   {% if tokens %}
-    <script>
-      // remove html encoding from the tokens so highlighter works
-      var decodeHTML = function (html) {
-          var txt = document.createElement('textarea');
-          txt.innerHTML = html;
-          return txt.value;
-      };
+<script>
+  // remove html encoding from the flask search tokens
+  // hat tip to https://gomakethings.com/decoding-html-entities-with-vanilla-javascript/
+  var decodeHTML = function (html) {
+      var txt = document.createElement('textarea');
+      txt.innerHTML = html;
+      return txt.value;
+  };
 
-      // grab all search query tokens from jinja
-      var tokens = "{{ tokens|replace(" ", "|") }}"; // add regex '|' or character
-      var tokens = decodeHTML(tokens);
-      // console.log(tokens);
-      var quotes = document.querySelectorAll('[id=quote-content]'); // find all quotes on the page
-      // console.log(quotes);
-      var re = new RegExp(tokens, "gi");
-      
-      for(var i=0; i<quotes.length; i++) { // loop through all quotes
-        var content = quotes[i].innerHTML;
-        // console.log(re, quotes[i].innerHTML.match(re)); // apply the regex replacement
+  console.log("{{ tokens }}")
+  console.log(decodeHTML("{{ tokens }}"))
 
-        content.match(re).forEach(function(match, i) { // loop over the matches
-          content = content.replace(match, function replace(match) { // wrap the found strings
-            return '<mark>' + match + '</mark>';
-          });
-        });
-
-        quotes[i].innerHTML = content;
-      };
-    </script>
+  // grab all search query tokens from flask
+  var tokens = "{{ tokens|replace(' ', '|') }}"; // add regex '|' "or" character
+  var tokens = decodeHTML(tokens); // remove html encoding mess from tokens using function above
+  var quotes = document.querySelectorAll('[id=quote-content]'); // find all quotes on the page
+  
+  // loop through all found quotes
+  for(var i=0; i<quotes.length; i++) {
+    var re_quotes = new RegExp(tokens, "gi"); // find all regex for matching tokens
+    var content = quotes[i].innerHTML; // grab the quote content
+    content.match(re_quotes).forEach(function(match, i) { // loop over the all token matches in content
+      var re_matches = new RegExp(match + "\\b", "gi"); // replace regex for all whole word token matches
+      content = content.replace(re_matches, '<mark>' + match + '</mark>'); // actually replace all token matches
+    });
+    quotes[i].innerHTML = content; // set quote contect to with updated highlighting
+  };
+</script>
   {% endif %}
 
   <!-- INSERT COMMON QUOTE MODALS -->

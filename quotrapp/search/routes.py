@@ -1,9 +1,11 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from sqlalchemy import desc
+from string import punctuation
+from re import escape, sub
 from quotrapp import db
 from quotrapp.models import Quote, Token
 from quotrapp.search.forms import SearchForm
-from quotrapp.search.utils import Search
+from quotrapp.search.utils import Search, analyze
 
 
 search_bp = Blueprint('search_bp', __name__)
@@ -22,33 +24,7 @@ def search():
 
     if form.validate_on_submit():
         q = form.q.data.lower()
-        # print(f'**** SEARCH QUERY = {q} ****')
-
-        quote_ids = search_idx.search(q)
-
-        if quote_ids:
-            # add search tokens to db
-            tokens = q.split()
-            token_objects = []
-            for token in tokens:
-                check = Token.query.filter_by(token=token).first()
-                if not check:
-                    t = Token(token=token, count=1)
-                    token_objects.append(t)
-                else:
-                    check.count += 1
-
-            # add all tokens to db at once
-            if token_objects:
-                db.session.add_all(token_objects)
-
-            db.session.commit()
-
-            return redirect(url_for('search_bp.search_results', q=q))
-        else:
-            flash(
-                f'sorry, there were no matches for "{q}"', 'warning')
-        return redirect(url_for('search_bp.search'))
+        return redirect(url_for('search_bp.search_results', q=' '.join(analyze(q))))
 
     return render_template('search.html', title='Search', form=form)
 
@@ -62,6 +38,25 @@ def search_results():
         quote_ids = search_idx.search(q)
         # print(f'**** SEARCH QUERY = {quote_ids} ****')
 
+        if quote_ids:
+            # add search tokens to db
+            tokens = q.split()
+            token_objects = []
+            for token in tokens:
+                if search_idx.search(token):
+                    check = Token.query.filter_by(token=token).first()
+                    if not check:
+                        t = Token(token=token, count=1)
+                        token_objects.append(t)
+                    else:
+                        check.count += 1
+
+            # add all tokens to db at once
+            if token_objects:
+                db.session.add_all(token_objects)
+
+            db.session.commit()
+
         # potential future solution to lots of returned results
         # https://stackoverflow.com/questions/444475/sqlalchemy-turning-a-list-of-ids-to-a-list-of-objects/28370511#28370511
         quotes = Quote.query.filter(Quote.id.in_(quote_ids)).paginate(
@@ -72,7 +67,7 @@ def search_results():
             return render_template('quotes_by_search.html', title=title, tokens=q, quotes=quotes)
         else:
             flash(
-                f'sorry, there were no matches for "{q}"', 'warning')
+                f'sorry, there were no matches for your search', 'warning')
         return redirect(url_for('search_bp.search'))
 
     form = SearchForm()

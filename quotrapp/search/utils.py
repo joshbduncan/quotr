@@ -90,7 +90,9 @@ class Search:
             # all tokens must be in the document
             results = set.intersection(*matches)
 
-        if search_type == 'OR':
+        if search_type == 'OR' and len(matches) > 1:
             results = set.union(*matches)
+        else:
+            results = matches
 
         return results

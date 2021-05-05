@@ -177,3 +177,9 @@ sorted_authors = sorted(loves_count.items(),
     - sep'd out authors and search into their own modules with a blueprint
     - put Search class into search.utils
     - cleaned up imports for all routes files
+
+### 2021-05-04
+
+- removed excess code from code from search route
+- added sanitizing to search query before passing it to search function
+- put a check in place ```if search_idx.search(token)``` to only add search tokens to the db if they have matching quotes
