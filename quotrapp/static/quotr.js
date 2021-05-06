@@ -25,10 +25,11 @@ clipboard.on('error', function (e) {
 // SHARE MODEL
 $("#shareModal").on("show.bs.modal", function (event) {
     var identifier = $(event.relatedTarget); // Button that triggered the modal
-    var quote_link = identifier.data("identifier"); // Extract info from data-* attributes
+    var quote_id = identifier.data("id"); // Extract quote id from data-* attributes
+    var quote_link = identifier.data("link"); // Extract info from data-* attributes
     var quote_link_short = quote_link.replace(/^https?\:\/\//i, ""); // Remove http:// or https:// from URL
-    var quote_text = identifier.data("content"); // Extract quote content from data-* attributes
-    var quote_author = identifier.data("author"); // Extract quote author from data-* attributes
+    var quote_text = document.querySelector("blockquote#quote-" + quote_id).innerText;
+    var quote_author = document.querySelector("cite#quote-" + quote_id).innerText;
 
     var quote_length = quote_text.length;
     var author_length = quote_author.length;
@@ -48,11 +49,11 @@ $("#shareModal").on("show.bs.modal", function (event) {
     twitter_button.setAttribute("href", twitter_tweet);
 
     var facebook_button = document.getElementById("facebook-button");
-    var facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + quote_link;
+    var facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + quote_link + "&quote=" + quote_text + " – " + quote_author;
     facebook_button.setAttribute("href", facebook_link);
 
     var email_body = 'Hey, I found this quote and thought you might like it!\n\n' +
-        '"' + quote_text + '"\n\n' +
+        '"' + quote_text + '" – ' + quote_author + '\n\n' +
         'View it online: ' + quote_link;
 
     var email_button = document.getElementById("email-button");

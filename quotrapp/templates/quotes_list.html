@@ -1,9 +1,9 @@
 <div id="quotes-list">
   {% for quote in quotes.items %}
-  <div class="quote mt-5 border-bottom">
+  <div class="quote mt-5 border-bottom" id="quote-{{ quote.id }}">
     <div>
-      <blockquote class="quote-text-list"><a id="quote-content" class="text-dark text-decoration-none" href="{{ url_for('quotes_bp.quote', quote_id=quote.id) }}">{{ quote.content }}</a></blockquote>
-      <p class="quote-author-list">&mdash; <cite><a href="{{ url_for('authors_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite>
+      <blockquote class="quote-text-list" id="quote-{{ quote.id }}"><a id="quote-content" class="text-dark text-decoration-none" href="{{ url_for('quotes_bp.quote', quote_id=quote.id) }}">{{ quote.content }}</a></blockquote>
+      <p class="quote-author-list">&mdash; <cite id="quote-{{ quote.id }}"><a href="{{ url_for('authors_bp.quotes_by_author', author=quote.author.name) }}">{{ quote.author.name }}</a></cite>
       </p>
     </div>
     <div class="mb-5">
@@ -25,7 +25,7 @@
             </a>
         {% endif %}
         
-        <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-identifier="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}"  data-content="{{ quote.content }}" data-author="{{ quote.author.name }}"><i class="fas fa-share-alt"></i></a>
+        <a class="quote-share float-right text-decoration-none pr-2" href="" title="Share Quote" data-toggle="modal" data-target="#shareModal" data-id="{{ quote.id }}" data-link="{{ url_for('quotes_bp.quote', quote_id=quote.id, _external=True) }}"><i class="fas fa-share-alt"></i></a>
       </p>
     </div>
   </div>
