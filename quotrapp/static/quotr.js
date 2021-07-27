@@ -76,6 +76,8 @@ $(document).ready(function () {
         var love_count = love.getElementsByClassName("love_count")[0];
         var love_action = love.getAttribute("love_action");
 
+        // TODO: update url to use flask jinja url for
+        // TODO: update to new ajax request method (much cleaner)
         req = $.ajax({
             url: "/quote/_loved",
             type: "POST",
