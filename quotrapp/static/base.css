@@ -153,7 +153,6 @@ a.no-hover:focus, a.no-hover:hover {
 
 /* Autocomplete jquery cleanup */
 .ui-menu {
-    font-family: 'APL385 Unicode', Hack, 'Go Mono', 'Roboto Mono', 'IBM Plex Mono', Inconsolata, 'Source Code Pro', 'PT Mono', 'Ubuntu Mono', 'Fira Mono', monospace;
     font-size: 1.25rem;
     color: #495057;
     padding-left: .8em;
